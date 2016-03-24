@@ -124,8 +124,8 @@ def train_neural(neural_net, trainX, trainY, validX, validY):
 			print("MSE on Epoch %d : %f"%(iteration/epoch_size, mse))
 			if mse <= 0.025:
 				break
-
-	return iteration, getMSE(neural_net, validX, validY)
+	print("Terminating after %d  iterations "%(iteration+1))
+	return iteration+1, getMSE(neural_net, validX, validY)
 
 
 def getMSE(neural_net, validX, validY):

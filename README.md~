@@ -58,7 +58,7 @@ To execute the decision tree on some program, use the following command :
 python driver.py arg1 arg2 
 
 arg1 : path to control file (string)
-arg2 : hidden layer specification (comma separated string of numbers, within quotes)
+arg2 : hidden layer specification (comma separated string of numbers, within quotess)
 
 
 For example, for the selected datasets,
