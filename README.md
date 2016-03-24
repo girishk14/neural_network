@@ -1,5 +1,5 @@
 CSCE 633 : Machine Learning (Spring 2016)
-Project 1 : Neural Networks and Back-propagation
+Project 2 : Neural Networks and Back-propagation
 
 Author : Girish Kasiviswanathan (UIN : 425000392)
 
@@ -53,7 +53,7 @@ NOTE: ALL THE FOLLOWING ARE MANDATORY METADATA INFORMATION REQUIRED
 
 Running the Neural Network:
 ---------------------------
-To execute the decision tree on some program, use the following command : 
+To execute the neural network, use the following command : 
 
 python driver.py arg1 arg2 
 
@@ -70,9 +70,9 @@ python driver.py data/Phising/control.json "3"
 python driver.py data/Car/control.json "4"
 
 
-Running Decision Tree comparision
+Running Decision Tree for comparision
 ---------------------------------
-Add the switch --dtree to the command. This run the decision tree also on the same folds and reports the accruacies. If this switch is not enabled, the decision tree accuracies default to 0.
+Add the switch --dtree to the command. This run the decision tree also on the same folds and reports the accuracies. If this switch is not enabled, the decision tree accuracies default to 0.
 
 For example,
 python driver.py data/Iris/control.json "4" --dtree
