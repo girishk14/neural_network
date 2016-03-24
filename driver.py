@@ -29,7 +29,7 @@ def main():
 	neural_spec = [int(spec.strip()) for spec in sys.argv[2].split(",")]
 	neural_spec.append(len(neural_op[0]))
 	neural_spec.insert(0, len(neural_ip[0]))
-	learning_rate, momentum_rate = 0.4, 0.01# 0.001, 0.001
+	learning_rate, momentum_rate = 0.15, 0.02# 0.001, 0.001
 
 	neural_accs, mean_iter, mse = k_fold_validation_neural_net(neural_ip, neural_op, neural_spec, learning_rate, momentum_rate)
 	dtree_accs = [0]*10
@@ -39,33 +39,30 @@ def main():
 	
 
 	print("\n\n")
-	print("Dataset Size %d"%(len(ip)))
-	print("Average Number of Iterations for Neural Network %f"%(mean_iter))
-	print("Average of Mean Squared Error for Neural Network %f"%(mse))
+	print("Dataset Size : %d"%(len(ip)))
+	print("Average Number of Iterations for Neural Network : %.3f"%(mean_iter))
+	print("Average of Mean Squared Error for Neural Network : %.2f"%(mse))
 	
-	print("Fold\t\t\tNeural Network\t\t\tDecision Tree")
+	print("\nFold\t\t\tNeural Network\t\t\tDecision Tree")
 	for fold in range(0,10):
-			print( "%d \t\t\t %2f \t\t\t %2f"%(fold+1, neural_accs[fold], dtree_accs[fold]))
+			print( "%d \t\t\t %.2f \t\t\t %.2f"%(fold+1, neural_accs[fold], dtree_accs[fold]))
 
 	dtree_mu, dtree_ci = statistics.calc_confidence_interval(dtree_accs)
 	neural_mu, neural_ci = statistics.calc_confidence_interval(neural_accs)
 
 	t_mu, t_ci = statistics.paired_t_test(dtree_accs, neural_accs)
 
-	print("Confidence interval for neural network : %f   +/-   %f"%(neural_mu, neural_ci))
-	print("Confidence interval for decison tree : %f   +/-   %f"%(dtree_mu, dtree_ci))
+	print("\nConfidence interval for neural network : %.3f   +/-   %.3f"%(neural_mu, neural_ci))
+	print("Confidence interval for decison tree : %.3f   +/-   %.3f"%(dtree_mu, dtree_ci))
 
 
-	print("Result of Paired T-Test : %f   +/-   %f"%(t_mu, t_ci))
+	print("Result of Paired T-Test : %.3f   +/-   %.3f"%(t_mu, t_ci))
 
 	if 0 > t_mu - t_ci and 0<t_mu+t_ci:
 		print("The two algorithms are statistically similar")
 
 	else:
 		print("The difference in the performance of the two algorithms is statistically significant")
-
-
-
 
 
 def k_fold_generator(X, y, k_fold):
@@ -91,11 +88,7 @@ def k_fold_validation_neural_net(neural_ip, neural_op, neural_spec, learning_rat
 		accs.append(acc)
 		total_iterations+=iters
 		total_mse +=mse
-
 	return accs, total_iterations/10.0, total_mse/10.0
-
-
-		
 
 
 def k_fold_validation_dtree(ip, op, metadata):
@@ -114,7 +107,6 @@ def run_neural_network(splits, neural_spec, learning_rate, momentum_rate):
 	neural_net =  neural_network.NeuralNetwork(neural_spec, learning_rate, momentum_rate)
 	(trainX,trainY, validX,validY, testX, testY) = splits
 	iterations ,mse= train_neural(neural_net, trainX, trainY, validX, validY)
-	print("MSEE", mse)
 	acc = test_neural(neural_net, testX, testY)
 	return acc, iterations, mse
 
@@ -123,7 +115,6 @@ def train_neural(neural_net, trainX, trainY, validX, validY):
 	epoch_size = len(validX)
 
 	for iteration in range(0, 20000):
-		#print("iteration :", iteration)
 		random_idx = numpy.random.randint(0, len(trainX))
 		neural_net.feedForward(trainX[random_idx])
 		neural_net.backPropagate(trainY[random_idx])
@@ -131,7 +122,7 @@ def train_neural(neural_net, trainX, trainY, validX, validY):
 		if iteration%epoch_size == 0:
 			mse = getMSE(neural_net, validX, validY)
 			print("MSE on Epoch %d : %f"%(iteration/epoch_size, mse))
-			if mse <= 0.01:
+			if mse <= 0.025:
 				break
 
 	return iteration, getMSE(neural_net, validX, validY)
