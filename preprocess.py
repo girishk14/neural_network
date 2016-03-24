@@ -62,10 +62,10 @@ def pre_process_stage1(control_file): #Read in data, separate into data and labe
 	
 	print("stage 1 complete",control_file )
 
-	return pre_process_stage2(dataset, labels, metadata)
+	return dataset, labels, metadata
 
 
-def pre_process_stage2(dataset, labels, metadata):
+def normalize(dataset, labels, metadata):
 	
 	neural_input = [[] for x in range(len(dataset))]
 	for attr in range(0,metadata['no_attrs']):

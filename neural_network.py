@@ -5,10 +5,8 @@ import math
 from copy import deepcopy
 from itertools import izip
 
-def sigmoid(y):
-	return 1 / (1.0 + numpy.exp(-y))
-def derivative_sigmoid(y):
-	return y * (1-y)
+def sigmoid(y): return 1 / (1.0 + numpy.exp(-y))
+def derivative_sigmoid(y): return y * (1-y)
 
 class NeuralNetwork:
 	def __init__(self, layers, learning_rate, momentum_rate):
@@ -29,22 +27,18 @@ class NeuralNetwork:
 		self.unit_errors[op_layer] =  (outputs - self.activations[op_layer][0:-1]) * derivative_sigmoid(self.activations[op_layer][0:-1])
 		for hiddenlayer in range(op_layer-1, 0, -1): #From the second last layer, to the the second layer (Hidden Layers) :
 			self.unit_errors[hiddenlayer]  = numpy.dot(self.weights[hiddenlayer][0:-1],self.unit_errors[hiddenlayer+1]) * derivative_sigmoid(self.activations[hiddenlayer][0:-1])
-		mse_vec =  numpy.square(outputs - self.activations[op_layer][0:-1])
-		return 0.5 *  (numpy.sum(mse_vec))
-
 	
 	def compute_delta_w(self):
 		for layerid in range(len(self.weights)-1,-1,-1):
 			self.delta_w[layerid] = self.learning_rate * numpy.outer(self.activations[layerid], self.unit_errors[layerid+1]) + self.momentum_rate * self.delta_w[layerid]
 
 	def update_weights(self):
-		for l in range(0, len(self.weights)):
-			self.weights[l]  = self.weights[l] + self.delta_w[l]
+		for l in range(0, len(self.weights)): self.weights[l]  = self.weights[l] + self.delta_w[l]
 
 	def backPropagate(self, outputs):
 		mse = self.compute_errors(outputs)
 		self.compute_delta_w()
 		self.update_weights()
-		return mse
+	
 
 #
