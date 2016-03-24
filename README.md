@@ -15,7 +15,7 @@ Files and Directories Included
 1. data : Folder containing all the datasets and their control files
 2. decision_tree_comp: Folder containing modules from decision_tree project that are integrated in this project
 3. driver.py, pre_process.py, neural_network.py, statistics.py: Core Python module
-4. Decision_Tree_Report.pdf : Design documentation
+4. Neural_Network_Report.pdf : Design documentation
 5. Results.pdf : Results for sample runs 
 
 
